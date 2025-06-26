@@ -107,7 +107,7 @@ class provider extends ChangeNotifier {
       );
 
       await NotificationServiceManager().show(
-        title: 'Thông Báo',
+        title: 'Thông Báo thêm',
         body: 'Bạn vừa thêm task: ${tieude}',
         notificationDetails: details,
       );
@@ -127,12 +127,12 @@ class provider extends ChangeNotifier {
 
       try {
         NotificationDetails details = NotificationServiceManager().getNotificationDetail(
-          channelId: 'update task',
+          channelId: 'update task ',
           channelName: 'update task ${index}',
         );
 
         await NotificationServiceManager().show(
-          title: 'Thông Báo',
+          title: 'Thông Báo cập nhật',
           body: 'Bạn vừa sửa thông tin task: ${_ds_todo[index].tieude}',
           notificationDetails: details,
         );
@@ -159,7 +159,7 @@ class provider extends ChangeNotifier {
         );
 
         await NotificationServiceManager().show(
-          title: 'Thông Báo',
+          title: 'Thông Báo hoàn thành',
           body: 'Bạn vừa đánh dấu hoàn thành task: ${removedTodo.tieude}',
           notificationDetails: details,
         );
