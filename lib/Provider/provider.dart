@@ -99,6 +99,23 @@ class provider extends ChangeNotifier {
     final newTodo = todo_list(tieude: tieude, mieu_ta: mieuta);
     _ds_todo.add(newTodo);
     await _writeToDoList(_ds_todo);
+
+    try {
+      NotificationDetails details = NotificationServiceManager().getNotificationDetail(
+        channelId: 'add task',
+        channelName: 'add task ${tieude}',
+      );
+
+      await NotificationServiceManager().show(
+        title: 'Thông Báo',
+        body: 'Bạn vừa thêm task: ${tieude}',
+        notificationDetails: details,
+      );
+    } catch (e) {
+      print('Lỗi gửi thông báo: $e');
+      _errorMessage = 'Lỗi khi gửi thông báo: $e';
+    }
+
     notifyListeners();
   }
 
@@ -110,13 +127,13 @@ class provider extends ChangeNotifier {
 
       try {
         NotificationDetails details = NotificationServiceManager().getNotificationDetail(
-          channelId: 'add task',
-          channelName: 'task',
+          channelId: 'update task',
+          channelName: 'update task ${index}',
         );
 
         await NotificationServiceManager().show(
           title: 'Thông Báo',
-          body: 'Bạn vừa thêm task: ${_ds_todo[index].tieude}',
+          body: 'Bạn vừa sửa thông tin task: ${_ds_todo[index].tieude}',
           notificationDetails: details,
         );
       } catch (e) {
