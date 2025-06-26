@@ -10,17 +10,17 @@
   - **Edit Task**: Modify existing tasks' titles and descriptions.
   - **Delete Task**: Remove tasks with a confirmation dialog.
   - **Search Task**: Search tasks by title or description using a search bar.
-  - **Mark as Completed**: Swipe right on a task to mark it as completed (currently removes the task, with potential for future enhancement to track completion status).
+  - **Mark as Completed**: click button done on a task to mark it as completed (currently completion the task, with potential for future enhancement to track removes status).
   - **Local Storage**: Persist tasks in a local JSON file.
-  - **Notifications**: Receive notifications when a task is deleted.
+  - **Notifications**: Receive notifications when a task is added, deleted, edited.
 - **Tiếng Việt**:
   - **Thêm công việc**: Thêm mới công việc với tiêu đề và mô tả.
   - **Chỉnh sửa công việc**: Sửa đổi tiêu đề và mô tả của công việc hiện có.
   - **Xóa công việc**: Xóa công việc với hộp thoại xác nhận.
   - **Tìm kiếm công việc**: Tìm kiếm công việc theo tiêu đề hoặc mô tả bằng thanh tìm kiếm.
-  - **Đánh dấu hoàn thành**: Kéo qua phải trên một công việc để đánh dấu hoàn thành (hiện tại xóa công việc, có thể mở rộng để theo dõi trạng thái hoàn thành).
+  - **Đánh dấu hoàn thành**: Nhấn nút Done trên một công việc để đánh dấu hoàn thành (hiện tại hoàn thành công việc, có thể mở rộng để theo dõi trạng thái xóa).
   - **Lưu trữ cục bộ**: Lưu trữ công việc trong tệp JSON cục bộ.
-  - **Thông báo**: Nhận thông báo khi xóa một công việc.
+  - **Thông báo**: Nhận thông báo khi thêm, xóa, sửa một công việc.
 
 ## Technologies and Libraries / Công nghệ và thư viện
 - **English**:
