@@ -3,7 +3,10 @@ import 'dart:io' show File;
 
 import 'package:bai_ktr_lethanhanh/Model/model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../Notification_soucre/NotificationServiceManager.dart';
 
 class provider extends ChangeNotifier {
   List<todo_list> _ds_todo = [];
@@ -20,11 +23,11 @@ class provider extends ChangeNotifier {
   Future<String> get _localPath async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      print("Đường dẫn hiện tại: ${directory.path}"); // Kiểm tra đường dẫn
+      print("Đường dẫn hiện tại: ${directory.path}"); // Log đường dẫn
       return directory.path;
     } catch (e) {
       print('Error getting local path: $e');
-      _errorMessage = 'Lỗi khi truy cập thư mục lưu trữ: $e';
+      _errorMessage = 'Lỗi khi truy cập thư mục: $e';
       notifyListeners();
       throw Exception('Unable to get documents directory');
     }
@@ -32,7 +35,7 @@ class provider extends ChangeNotifier {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    print("Đường dẫn tệp: $path/ToDoList.json"); // Kiểm tra đường dẫn tệp
+    print("Đường dẫn tệp: $path/ToDoList.json"); // Log đường dẫn tệp
     return File('$path/ToDoList.json');
   }
 
@@ -41,12 +44,12 @@ class provider extends ChangeNotifier {
       final file = await _localFile;
       if (await file.exists()) {
         final contents = await file.readAsString();
-        print("Nội dung tệp JSON: $contents"); // In nội dung tệp
+        print("Nội dung tệp JSON: $contents"); // Log nội dung tệp
         final List<dynamic> decoded = jsonDecode(contents);
-        print("Danh sách sau khi decode: $decoded"); // Kiểm tra decoded data
+        print("Danh sách decoded: $decoded"); // Log dữ liệu decoded
         return decoded.map((json) => todo_list.fromJson(json)).toList();
       }
-      print("Tệp rỗng hoặc không tồn tại");
+      print("Tệp rỗng hoặc không tồn tại"); // Log khi tệp rỗng
       return [];
     } catch (e) {
       print('Error reading ToDoList: $e');
@@ -60,9 +63,9 @@ class provider extends ChangeNotifier {
     try {
       final file = await _localFile;
       final encodableList = todoList.map((todo) => todo.toJson()).toList();
-      print("Dữ liệu ghi vào JSON: $encodableList"); // Kiểm tra dữ liệu trước khi ghi
+      print("Dữ liệu ghi vào JSON: $encodableList"); // Log dữ liệu trước khi ghi
       await file.writeAsString(jsonEncode(encodableList));
-      print("Ghi tệp thành công");
+      print("Ghi tệp thành công"); // Log khi ghi thành công
     } catch (e) {
       print('Error writing ToDoList: $e');
       _errorMessage = 'Lỗi khi lưu danh sách: $e';
@@ -71,6 +74,7 @@ class provider extends ChangeNotifier {
   }
 
   Future<void> loadToDoList() async {
+    print("Bắt đầu tải danh sách..."); // Log bắt đầu tải
     _isLoading = true;
     notifyListeners();
 
@@ -78,12 +82,13 @@ class provider extends ChangeNotifier {
       final loadedList = await _readToDoList();
       if (loadedList.isNotEmpty) {
         _ds_todo = loadedList;
-        print("Danh sách todo sau khi tải: $_ds_todo"); // Kiểm tra danh sách
+        print("Danh sách todo sau khi tải: $_ds_todo"); // Log danh sách sau khi tải
       } else {
         print("Không có dữ liệu để tải");
       }
     } catch (e) {
       _errorMessage = 'Lỗi khi tải danh sách: $e';
+      print("Lỗi khi tải: $e");
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -102,14 +107,50 @@ class provider extends ChangeNotifier {
       _ds_todo[index].tieude = title;
       _ds_todo[index].mieu_ta = description;
       await _writeToDoList(_ds_todo);
+
+      try {
+        NotificationDetails details = NotificationServiceManager().getNotificationDetail(
+          channelId: 'add task',
+          channelName: 'task',
+        );
+
+        await NotificationServiceManager().show(
+          title: 'Thông Báo',
+          body: 'Bạn vừa thêm task: ${_ds_todo[index].tieude}',
+          notificationDetails: details,
+        );
+      } catch (e) {
+        print('Lỗi gửi thông báo: $e');
+        _errorMessage = 'Lỗi khi gửi thông báo: $e';
+      }
+
       notifyListeners();
     }
   }
 
   Future<void> remove_todo(int index) async {
     if (index >= 0 && index < _ds_todo.length) {
+      final removedTodo = _ds_todo[index]; // Lưu task bị xóa để sử dụng trong thông báo
       _ds_todo.removeAt(index);
       await _writeToDoList(_ds_todo);
+
+      // Gửi thông báo khi xóa task
+      try {
+        NotificationDetails details = NotificationServiceManager().getNotificationDetail(
+          channelId: 'task',
+          channelName: 'task_${index}',
+        );
+
+        await NotificationServiceManager().show(
+          title: 'Thông Báo',
+          body: 'Bạn vừa đánh dấu hoàn thành task: ${removedTodo.tieude}',
+          notificationDetails: details,
+        );
+      } catch (e) {
+        print('Lỗi gửi thông báo: $e');
+        _errorMessage = 'Lỗi khi gửi thông báo: $e';
+      }
+
       notifyListeners();
     }
   }

@@ -39,6 +39,7 @@ dependencies:
   flutter_local_notifications: ^19.1.0
   path_provider: ^2.1.1
   json_annotation: ^4.9.0
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:

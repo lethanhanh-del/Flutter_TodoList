@@ -26,73 +26,22 @@ class _homeState extends State<home> {
   }
   tb_XacNhan_remove_to_do (BuildContext context ,int index) {
     showDialog(
-      barrierDismissible: false,
       context: context,
-      builder: (context)=>AlertDialog(
-        title: Align(alignment: Alignment.center,child: Text("Delete Task"),),
-        content: Text("Are you sure you want delete this task?"),
+      builder: (context) => AlertDialog(
+        title: Text('Xác nhận hoàn thành'),
+        content: Text('Bạn chắc chắn mình đã hoàn thành task này ? "${context.read<provider>().ds_todo[index].tieude}"?'),
         actions: [
-          Container(
-            width: 300,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Nút Cancel
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-
-                    child: Container(
-                      width: 145,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey), // Viền mỏng cho Cancel
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white, // Màu nền cho Cancel
-                      ),
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black, // Màu chữ cho Cancel
-                        ),
-                      ),
-                    ),
-
-                ),
-                // Nút Delete
-                InkWell(
-                  onTap: () {
-                    context.read<provider>().remove_todo(index);
-                    Navigator.of(context).pop();
-                  },
-
-                    child: Container(
-                      width: 145,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.red, // Màu đỏ cho Delete
-                      ),
-                      child: Text(
-                        "Delete",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white, // Màu chữ trắng cho Delete
-                        ),
-                      ),
-                    ),
-
-                ),
-              ],
-            ),
-          )
-
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Hủy'),
+          ),
+          TextButton(
+            onPressed: () {
+              context.read<provider>().remove_todo(index);
+              Navigator.pop(context);
+            },
+            child: Text('Hoàn thành', style: TextStyle(color: Colors.green)),
+          ),
         ],
       ),
     );
@@ -115,59 +64,68 @@ class _homeState extends State<home> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => edit_todo(index: index)));
               },
-              child: Container(
-                width: double.infinity,
-                height: 100,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                title,
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: EdgeInsetsGeometry.only(top: 5,left: 5,bottom: 5),
+                child: Container(
+                  width: double.infinity,
+                  constraints: BoxConstraints(
+                    minHeight: 150, // Độ cao tối thiểu
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  title,
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                description,
-                                style: TextStyle(
-                                  fontSize: 20,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  description,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: IconButton(
-                          onPressed: () {
-                            tb_XacNhan_remove_to_do(context, index);
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            size: 40,
-                            color: Colors.red,
-                          )),
-                    ),
-                  ],
+                      Expanded(
+                        flex: 2,
+                        child: IconButton(
+                            onPressed: () {
+                              tb_XacNhan_remove_to_do(context, index);
+                            },
+                            icon: Icon(
+                              Icons.done,
+                              size: 50,
+                              color: Colors.green,
+                            )),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              )
             );
           } else {
             return Container();
@@ -206,17 +164,22 @@ class _homeState extends State<home> {
           ),
           body: (pro.sl_doto == 0 || ds.isEmpty)
               ? Center(
-            child: Text(
-              "Không tìm thấy công việc nào",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-            ),
+            child: Padding(
+              padding: EdgeInsetsGeometry.all(2),
+              child:  Text(
+                "Không tìm thấy công việc nào",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              ),
+            )
           )
               : ListView.builder(
             itemCount: ds.length,
             itemBuilder: (context, index) => Padding(
               padding: EdgeInsets.all(10),
               child: Container(
-                height: 150,
+                constraints: BoxConstraints(
+                  minHeight: 150, // Độ cao tối thiểu
+                ),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.grey,

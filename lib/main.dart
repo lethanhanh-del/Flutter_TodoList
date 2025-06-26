@@ -17,10 +17,9 @@ void main() async {
 
   await NotificationServiceManager().init();
 
-
   runApp(
     ChangeNotifierProvider(
-        create: (_)=> provider(),
+        create: (_)=> provider()..loadToDoList(),
       child: const MyApp(),
     )
   );
