@@ -15,6 +15,15 @@ class home extends StatefulWidget {
 class _homeState extends State<home> {
   TextEditingController _searchController = TextEditingController();
   String _searchQuery = ''; // Biến lưu trữ chuỗi tìm kiếm
+
+  void initState() {
+    super.initState();
+    // Đảm bảo tải danh sách khi khởi động
+    final provd = Provider.of<provider>(context, listen: false);
+    provd.loadToDoList().then((_) {
+      setState(() {}); // Cập nhật UI sau khi tải
+    });
+  }
   tb_XacNhan_remove_to_do (BuildContext context ,int index) {
     showDialog(
       barrierDismissible: false,
