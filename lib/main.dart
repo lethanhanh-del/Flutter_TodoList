@@ -1,9 +1,23 @@
 import 'package:bai_ktr_lethanhanh/Provider/provider.dart';
 import 'package:bai_ktr_lethanhanh/Screen/home.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'Notification_soucre/NotificationServiceManager.dart';
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await [
+    Permission.notification,
+    Permission.scheduleExactAlarm,
+  ].request();
+
+  await NotificationServiceManager().init();
+
+
   runApp(
     ChangeNotifierProvider(
         create: (_)=> provider(),
