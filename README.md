@@ -1,8 +1,8 @@
 # ToDoList Application / Ứng dụng ToDoList
 
 ## Overview / Tổng quan
-- **English**: The ToDoList application is a mobile app built with Flutter, designed to help users manage their daily tasks efficiently. Users can add, edit, delete, and search for tasks, with the ability to mark tasks as completed by swiping right. The app stores task data locally in a JSON file and provides notifications when tasks are removed.
-- **Tiếng Việt**: Ứng dụng ToDoList là một ứng dụng di động được xây dựng bằng Flutter, giúp người dùng quản lý công việc hàng ngày một cách hiệu quả. Người dùng có thể thêm, chỉnh sửa, xóa và tìm kiếm công việc, đồng thời đánh dấu công việc đã hoàn thành bằng cách kéo qua phải. Dữ liệu công việc được lưu trữ cục bộ dưới dạng tệp JSON và gửi thông báo khi công việc bị xóa.
+- **English**: The ToDoList application is a mobile app built with Flutter, designed to help users manage their daily tasks efficiently. Users can add, edit, delete, and search for tasks, with the ability to mark tasks as completed by click button done. The app stores task data locally in a JSON file and provides notifications when tasks are removed.
+- **Tiếng Việt**: Ứng dụng ToDoList là một ứng dụng di động được xây dựng bằng Flutter, giúp người dùng quản lý công việc hàng ngày một cách hiệu quả. Người dùng có thể thêm, chỉnh sửa, xóa và tìm kiếm công việc, đồng thời đánh dấu công việc đã hoàn thành bằng cách nhấn nút done. Dữ liệu công việc được lưu trữ cục bộ dưới dạng tệp JSON và gửi thông báo khi công việc bị xóa.
 
 ## Features / Các tính năng
 - **English**:
